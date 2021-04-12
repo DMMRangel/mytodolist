@@ -1,32 +1,70 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
+  <div class="app">
+    <v-app>
+      <v-container>
+        <v-main>
+          <v-toolbar dark color="green">
+            <v-toolbar-title>Lista de Tarefas</v-toolbar-title>
+          </v-toolbar>
+
+          <div>
+            <v-text-field
+              placeholder="Digite uma tarefa..."
+              v-model="task"
+              @keyup.enter="capturarTask()"
+            ></v-text-field>
+            <v-btn class="my-5" @click="capturarTask()" dark color="success">
+              Adicionar</v-btn
+            >
+          </div>
+
+          <v-divider></v-divider>
+
+          <v-list-item-group
+            multiple
+            color="success"
+            active-class="">
+            <v-list-item
+              v-for="(task, i) in tasks"
+              :key="i">
+              <template v-slot:default="{ active }">
+                <v-list-item-content>
+                  {{ task }}
+                </v-list-item-content>
+                <v-list-item-action>
+                  <v-checkbox
+                    color="success"
+                    :input-value="active"></v-checkbox>
+                </v-list-item-action>
+              </template>
+            </v-list-item>
+          </v-list-item-group>
+        </v-main>
+      </v-container>
+    </v-app>
   </div>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+export default {
+  name: "App",
 
-#nav {
-  padding: 30px;
-}
+  components: {
+    //
+  },
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+  data: () => ({
+    task: "",
+    tasks: [],
+  }),
 
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+  methods: {
+    capturarTask() {
+      this.tasks.push(this.task);
+      console.log(`Tarefa adicionada: ${this.task}.`);
+      console.log(this.tasks);
+      this.task = "";
+    },
+  },
+};
+</script>
